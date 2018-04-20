@@ -1,0 +1,26 @@
+Questions
+Answer the following questions in your own words. This assignment will only be graded pass or fail.
+
+1. Explain the difference between the == operator and the === operator.
+    The == operator is the equality operator, excluding type.
+    The === operator is the equality operator, including type.
+      1 == '1' // True, because of automatic type conversion.
+      1 === '1' // False, because one is numeric and one is a string.
+
+2. Explain what a closure is. (Note that JavaScript programs use closures very often.)
+    When a function gets declared in JavaScript, it contains a function definition, as well as
+    a closure. A function definition is the literal function, and the closure is the collection
+    of all the variables that are in (lexical) scope at the time the function is created. The return
+    value of this function doesn't get destroyed together with the local execution context.
+    Closures become especially relevant when a function returns a function. The returned functions
+    has access to variables that exist in the local scope.
+
+3. Explain what higher order functions are.
+    A higher-order function is a function that takes another function as an argument,
+    or returns another function as the result of the parent's function.
+
+4. Explain what a query selector is and give an example line of JavaScript that uses a query selector.
+    A query selector is a [Document] method that returns the first element
+    (method parameter) of the document that matches the (CSS) selector. Example:
+
+      let nav = document.querySelector("#nav");
