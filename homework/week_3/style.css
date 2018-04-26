@@ -1,0 +1,30 @@
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+};
+
+.tooltip {
+  font-weight: bold;
+  font-size: 50px;
+}
+
+.bars:hover {
+  fill: rgb(250, 0, 0, 0.7);
+}
+
+.bars {
+  fill: rgb(0, 0, 0, 0.5);
+}
+
+
+
+body {
+  background-image: url("https://i.pinimg.com/originals/b8/76/04/b876048f767bc52be5425e92371429ba.png");
+}
