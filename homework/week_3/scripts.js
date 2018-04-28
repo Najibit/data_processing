@@ -116,7 +116,6 @@ d3.json("/data.json", function(data) {
                       .attr("class", "tooltip")
                       .style("display", "none")
                       .style("font-weight", "bold")
-                      // .style("font-family", "Georgia")
                       .style("font-size", "30px")
                       .style("color", "red");
 
