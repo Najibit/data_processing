@@ -14,8 +14,7 @@ d3.select("body").append("h4").text("Name: Najib el Moussaoui").attr("class", "i
 d3.select("body").append("h4").text("Student number: 10819967").attr("class", "info");
 d3.select("body").append("h5").text("Visualizing crimes per category in The Netherlands in 2017. Hover over a bar to see the total count of crimes.").attr("class", "info");
 
-let dataSet;
-
+// extract JSON from data.json file
 d3.json("/data.json", function(data) {
 
     // add svg element to the DOM
