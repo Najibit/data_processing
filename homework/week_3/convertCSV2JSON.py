@@ -1,3 +1,12 @@
+###############################################################################
+# Name:         Najib el Moussaoui
+# Student ID:   10819967
+# Course:       Data Processing
+# Date:         28-04-2018
+#
+# Parses a csv file to a JSON-like object.
+###############################################################################
+
 import csv
 import json
 
@@ -7,7 +16,7 @@ CSV_FILE = "Geregistreerde_criminaliteit.csv"
 def convert(file, delimiter):
     """converts a raw CSV file to a JSON-like object"""
 
-    # Open CSV file, and safely close it when we're done
+    # Open CSV file
     opened_file = open(file)
 
     # Read the CSV data
@@ -35,8 +44,10 @@ def main():
 
     catagories = {}
 
+    # Add to new dict
     catagories.update(dict(catagories=new_data))
 
+    # write out to new file
     with open('data.json', 'w') as outfile:
         json.dump(catagories, outfile)
 

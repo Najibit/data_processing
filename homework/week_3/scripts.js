@@ -2,7 +2,7 @@
 Name:         Najib el Moussaoui;
 Student ID:   10819967;
 Course:       Data Processing;
-Date:         28-04-2017;
+Date:         28-04-2018;
 
 Description:  All the necessary JavaScript code to make a bar chart, using the
               JavaScript D3.js library. The data visualised is that of the count
