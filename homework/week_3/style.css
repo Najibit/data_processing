@@ -1,3 +1,8 @@
+.svg {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -13,6 +18,7 @@
 .tooltip {
   font-weight: bold;
   font-size: 50px;
+  font-family: "Courier New", monospace;
 }
 
 .bars:hover {
@@ -20,11 +26,14 @@
 }
 
 .bars {
-  fill: rgb(0, 0, 0, 0.5);
+  fill: rgb(0, 0, 0, 0.7);
 }
 
-
+.info {
+  text-align: center;
+  font-family: "Courier New", monospace;
+}
 
 body {
-  background-image: url("https://i.pinimg.com/originals/b8/76/04/b876048f767bc52be5425e92371429ba.png");
+  background: rgba(109, 7, 7, 0.6);
 }
