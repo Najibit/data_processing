@@ -96,7 +96,7 @@ d3.json("/data.json", function(data) {
        .attr("height", function(d) {
           return (d / 10000) * 9;});
 
-
+  // implement interactivity by displaying count of crimes on hover-over
   svg.selectAll("rect")
       .data(crimesArray)
       .on("mouseover", function() {
