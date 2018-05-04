@@ -98,15 +98,15 @@ window.onload = function() {
 
     function getColor(climate) {
       if (climate.includes('temperate')) {
-          return 'green';
+          return '#00FF7F';
       } else if (climate.includes('frozen')) {
-        return '#d8f0ff';
+        return '#87CEFA';
       } else if (climate.includes('murky')) {
-        return '#636363';
+        return '#D8BFD8';
       } else if (climate.includes('arid')) {
-        return '#fdae6b';
+        return '#FFE4B5';
       } else if (climate.includes('windy')) {
-        return '#d9d9d9';
+        return '#2F4F4F';
       } else if (climate.includes('hot')) {
         return '#e6550d';
       } else if (climate.includes('tropical')) {
@@ -116,14 +116,32 @@ window.onload = function() {
       } else if (climate.includes('humid')) {
         return '#9ecae1';
       } else if (climate.includes('polluted')) {
-        return '#9e9ac8';
+        return '#6B8E23';
       } else if (climate.includes('superheated')) {
         return '#e60d00';
       } else if (climate.includes('artic') || climate.includes('subartic')) {
         return '#3182bd';
       }
-
     }
+
+    // var gradient = svg.append("svg:defs")
+    //                   .append("svg:linearGradient")
+    //                   .attr("id", "gradient")
+    //                   .attr("x1", "0%")
+    //                   .attr("y1", "0%")
+    //                   .attr("x2", "100%")
+    //                   .attr("y2", "100%")
+    //                   .attr("spreadMethod", "pad");
+    //
+    //    gradient.append("svg:stop")
+    //             .attr("offset", "0%")
+    //             .attr("stop-color", "#a00000")
+    //             .attr("stop-opacity", 1);
+    //
+    //   gradient.append("svg:stop")
+    //           .attr("offset", "100%")
+    //           .attr("stop-color", "#aaaa00")
+    //           .attr("stop-opacity", 1);
 
 
 
@@ -146,9 +164,6 @@ window.onload = function() {
           .attr("height", height + margin.top)
           .attr("class", "svg")
 
-    for (let i = 0; i < velocities.length; i++) {
-      console.log(velocities[i][3]);
-    }
 
 
 
@@ -165,6 +180,11 @@ window.onload = function() {
         .style('stroke-width', '1px')
         .attr('class', 'planet')
 
+
+
+function starryNight (count) {
+  if (count < 0.5) {
+    console.log('1');
         svg.selectAll("ellipse")
             .data(starsXandY)
             .enter()
@@ -172,10 +192,23 @@ window.onload = function() {
             .attr('cx', d => d[0])
             .attr('cy', d => d[1])
             .attr('r', 1)
-            .attr('fill', 'white')
+            .attr('fill', 'yellow')
             .attr('class', 'stars')
+  } else {
+    console.log('2');
+    svg.selectAll("ellipse")
+        .data(starsXandY)
+        .enter()
+        .append('circle')
+        .attr('cx', d => d[0])
+        .attr('cy', d => d[1])
+        .attr('r', 1)
+        .attr('fill', 'black')
+        .attr('class', 'stars')
+  }
+}
 
-
+window.setInterval(starryNight(Math.random()), 1000);
 
 
     let xAxis = d3.axisBottom (xScale)
@@ -193,10 +226,5 @@ window.onload = function() {
         .attr('class', 'axis')
         .attr("transform", "translate(" + margin.right + ", -7)")
         .call(yAxis);
-
-
-
-
       }
-
 }
