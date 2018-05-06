@@ -183,6 +183,7 @@ window.onload = function() {
         .style('stroke', 'black')
         .style('stroke-width', '1px')
         .attr('class', 'planet')
+        .attr('id', )
 
         d3.select("svg").selectAll(".text")
             .data(climates)
@@ -268,17 +269,17 @@ window.setInterval(starryNight(Math.random()), 1000);
     response = spheres;
     // implement interactivity by displaying count of crimes on hover-over
     // create d3 tip
-  	var tip = d3.tip()
-  		.attr("class", "d3-tip")
-  		.offset([0, 0])
-
-  		// tip should display corresponding datavalues
-  		.html(function(d, i) {
-  			return "<p><strong>" + d[4] + "</strong></p><p><text>("
-  				+ d[0] + "," + d[1]
-  				+ ") </text></p>"
-  		})
-
-  	svg.call(tip)
+  	// var tip = d3.tip()
+  	// 	.attr("class", "d3-tip")
+  	// 	.offset([0, 0])
+    //
+  	// 	// tip should display corresponding datavalues
+  	// 	.html(function(d, i) {
+  	// 		return "<p><strong>" + d[4] + "</strong></p><p><text>("
+  	// 			+ d[0] + "," + d[1]
+  	// 			+ ") </text></p>"
+  	// 	})
+    //
+  	// svg.call(tip)
 }
 }
