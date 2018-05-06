@@ -1,3 +1,16 @@
+/******************************************************************************
+* Star Wars Scatterplot
+*
+* By: Najib el Moussaoui
+* Course: Data Processing
+* Date: May the 4th (be with you)
+*
+* Gives an overview of a select amount of planets in the Star Wars universe, by
+* orbital period, rotation period, planet radius and primary climate.
+*
+* Source: The Star Wars API (www.swapi.co)
+******************************************************************************/
+
 window.onload = function() {
 
   // arrays to store data in
@@ -10,7 +23,6 @@ window.onload = function() {
 
 
   // API links to call
-
   const planetAmount = 7;
   const planetLink1 = "https://swapi.co/api/planets/";
   const planetLink2 = "https://swapi.co/api/planets/?page=2";
@@ -31,7 +43,7 @@ window.onload = function() {
     .defer(d3.request, planetLink7)
     .awaitAll(theForce);
 
-
+    // function to launch when API calls are done
     function theForce(error, response) {
       if (error) throw error;
 
@@ -58,7 +70,7 @@ window.onload = function() {
       }
 
 
-      // restructering data so it's usable
+      // restructuring data so it's usable
       for (let i = 0; i < planets.length; i++) {
         let C3PO = [];
         if (planets[i].orbital_period < 700
@@ -98,9 +110,10 @@ window.onload = function() {
 
 
       // set colors for the different climates
-      climateColors.push('#bb9613', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd');
+      climateColors.push('#bb9613', '#87CEFA', '#D8BFD8', '#FFE4a6', '#2F4F4F', '#FF550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd');
       climates.push('temperate', 'frozen', 'murky', 'arid', 'windy', 'hot', 'tropical', 'frigid', 'humid', 'polluted', 'superheated', 'artic');
 
+      // and function to call when assigning color
       function getColor(climate) {
         if (climate.includes(climates[0])) {
             return climateColors[0];
@@ -150,7 +163,7 @@ window.onload = function() {
             .attr("class", "svg")
             .attr("transform", "translate(0, 50)")
 
-      //
+      // draw all planets
       svg.selectAll("circle")
           .data(spheres)
           .enter()
@@ -171,32 +184,32 @@ window.onload = function() {
           .attr('id', (d, i) => d[3][0])
 
 
+      // make a tooltip for when hovering over planets
+      svg.selectAll("circle")
+          .data(spheres)
+          .on("mouseover", function() {
+            tooltip.style("display", null);
+            d3.select(this).attr("r", 50)
+          })
+          .on("mouseout", function() {
+            let self = this;
+            tooltip.style("display", "none");
+            d3.selectAll(".planet")
+                        .style("opacity", 1)
+            d3.select(this).attr("r", d => (5 + (d[2] * 20) / 19720))
 
-        svg.selectAll("circle")
-            .data(spheres)
-            .on("mouseover", function() {
-              tooltip.style("display", null);
-              d3.select(this).attr("r", 50)
-            })
-            .on("mouseout", function() {
-              let self = this;
-              tooltip.style("display", "none");
-              d3.selectAll(".planet")
-                          .style("opacity", 1)
-              d3.select(this).attr("r", d => (5 + (d[2] * 20) / 19720))
-
-            })
-            .on("mousemove", function(d, i) {
-              var self = this;
-              let xPos =    d3.mouse(this)[0] - 15;
-              let yPos =    d3.mouse(this)[1] - 55;
-              tooltip.attr("transform", "translate(" + xPos +  "," + yPos + ")");
-              d3.select(this).attr("r", 45)
-              tooltip.select("text").text(`[${d[4]}]`)
-              d3.selectAll(".planet").filter(function(x) {return self != this; })
-                          .style("opacity", .2)
-
-            })
+          })
+          .on("mousemove", function(d, i) {
+            var self = this;
+            let xPos =    d3.mouse(this)[0] - 15;
+            let yPos =    d3.mouse(this)[1] - 55;
+            tooltip.attr("transform", "translate(" + xPos +  "," + yPos + ")");
+            d3.select(this).attr("r", 45)
+            tooltip.select("text").text(`[${d[4]}]`)
+            d3.selectAll(".planet")
+            .filter(function(x) {return self != this; })
+            .style("opacity", .2) // make all planets not selected harder to see
+          })
 
             let tooltip = svg.append("g")
                               .attr("class", "tooltip")
@@ -212,10 +225,11 @@ window.onload = function() {
                       .attr("dy", "1.2em");
 
 
-
+        // make a legend
         d3.select("svg").selectAll(".text")
             .data(climates)
-            .enter().append("circle")
+            .enter()
+            .append("circle")
             .attr("class", "text")
             .attr("cx", width - 60)
             .attr("cy", (d, i) => 10 + 30 * i)
@@ -223,6 +237,7 @@ window.onload = function() {
             .attr("fill", (d, i) => climateColors[i])
             .attr("transform", "translate(-100, 75)")
 
+        // and text for the legend
         d3.select("svg").selectAll(".climates")
           		.data(climates)
           		.enter().append("text")
@@ -233,6 +248,7 @@ window.onload = function() {
           		.text((d, i) => climates[i])
               .style('stroke', (d, i) => climateColors[i])
 
+        // title for the legend
         d3.select("svg")
             .append("text")
             .attr("class", "legendTitle")
@@ -241,6 +257,7 @@ window.onload = function() {
             .text("C L I M A T E S")
             .style("stroke", "yellow")
 
+      // label for x-axis
       d3.select("svg").append("text")
             .attr("x", width / 2)
             .attr("y", height)
@@ -250,6 +267,7 @@ window.onload = function() {
             .style("stroke", "yellow")
             .style("font-size", "25px")
 
+      // label for y-axis
       d3.select("svg").append("text")
             .attr("x", -400)
             .attr("y", -10)
@@ -259,26 +277,24 @@ window.onload = function() {
             .text("[ROTATION AROUND AXIS]")
             .attr("transform", "rotate(-90)")
 
-
-            svg.selectAll("ellipse")
-                .data(starsXandY)
-                .enter()
-                .append('circle')
-                .attr('cx', width / 2)
-                .attr('cy', height / 2)
-                .transition().duration(4000) // make planets appear at page visit
-                .delay(function (d, i) { return i * 2;})
-                .attr('cx', d => d[0])
-                .attr('cy', d => d[1])
-                .attr('r', 1)
-                .attr('fill', 'yellow')
-                .attr('class', 'stars')
-
-
-
-    let xAxis = d3.axisBottom (xScale)
+      // make a starry night :)
+      svg.selectAll("ellipse")
+          .data(starsXandY)
+          .enter()
+          .append('circle')
+          .attr('cx', width / 2)
+          .attr('cy', height / 2)
+          .transition().duration(4000) // make planets appear at page visit
+          .delay(function (d, i) { return i * 2;})
+          .attr('cx', d => d[0])
+          .attr('cy', d => d[1])
+          .attr('r', 1)
+          .attr('fill', 'yellow')
+          .attr('class', 'stars')
 
 
+    // call x- and y-axis
+    let xAxis = d3.axisBottom(xScale)
     let yAxis = d3.axisLeft(yScale)
 
     svg.append("g")
@@ -286,11 +302,10 @@ window.onload = function() {
         .attr("transform", "translate(10, " + height   + ")")
         .call(xAxis);
 
-
     svg.append("g")
         .attr('class', 'axis')
         .attr("transform", "translate(" + margin.right + ", -3)")
         .call(yAxis);
 
-      }
+    }
 }
