@@ -12,9 +12,10 @@ window.onload = function() {
   const planetLink4 = "https://swapi.co/api/planets/?page=4";
   const planetLink5 = "https://swapi.co/api/planets/?page=5";
   const planetLink6 = "https://swapi.co/api/planets/?page=6";
+  const planetLink7 = "https://swapi.co/api/planets/?page=7";
 
 
-  const planetAmount = 6;
+  const planetAmount = 7;
 
 
   d3.queue()
@@ -24,6 +25,7 @@ window.onload = function() {
     .defer(d3.request, planetLink4)
     .defer(d3.request, planetLink5)
     .defer(d3.request, planetLink6)
+    .defer(d3.request, planetLink7)
     .awaitAll(doFunction);
 
   function doFunction(error, response) {
@@ -63,14 +65,8 @@ window.onload = function() {
       }
     }
 
-    // color function
-    var categorical = { "name" : "schemeCategory20c", "n" : 20 };
-    var colorScale = d3.scaleOrdinal(d3[categorical.name])
 
     // svg element
-
-
-
 
     let svg = d3.select("body").append("svg")
 
@@ -99,7 +95,7 @@ window.onload = function() {
 
     function getColor(climate) {
       if (climate.includes('temperate')) {
-          return '#00FFFF';
+          return '#bb9613';
       } else if (climate.includes('frozen')) {
         return '#87CEFA';
       } else if (climate.includes('murky')) {
@@ -126,7 +122,7 @@ window.onload = function() {
     }
 
     climates.push('temperate', 'frozen', 'murky', 'arid', 'windy', 'hot', 'tropical', 'frigid', 'humid', 'polluted', 'superheated', 'artic');
-    climateColors = ['#00FFFF', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd'];
+    climateColors = ['#bb9613', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd'];
     // var gradient = svg.append("svg:defs")
     //                   .append("svg:linearGradient")
     //                   .attr("id", "gradient")
@@ -178,12 +174,57 @@ window.onload = function() {
         .append("circle")
         .attr('cx', d => xScale(d[0]) + margin.left)
         .attr('cy', d => yScale(d[1]))
+        .attr('r', 3)
+        .transition().duration(4000) // make the bars rise at page visit
+        .delay(function (d, i) { return i * 100;})
         .attr('r', d => (5 + (d[2] * 20) / 19720))
         .attr("fill", d => getColor(d[3]))
         .style('stroke', 'black')
         .style('stroke-width', '1px')
         .attr('class', 'planet')
-        .attr('id', )
+        .attr('id', (d, i) => d[3][0])
+
+
+
+        svg.selectAll("circle")
+            .data(spheres)
+            .on("mouseover", function() {
+              tooltip.style("display", null);
+              d3.select(this).attr("r", 50)
+            })
+            .on("mouseout", function() {
+              let self = this;
+              tooltip.style("display", "none");
+              d3.selectAll(".planet")
+                          .style("opacity", 1)
+              d3.select(this).attr("r", d => (5 + (d[2] * 20) / 19720))
+
+            })
+            .on("mousemove", function(d, i) {
+              var self = this;
+              let xPos =    d3.mouse(this)[0] - 15;
+              let yPos =    d3.mouse(this)[1] - 55;
+              tooltip.attr("transform", "translate(" + xPos +  "," + yPos + ")");
+              d3.select(this).attr("r", 45)
+              tooltip.select("text").text(`[${d[4]}]`)
+              d3.selectAll(".planet").filter(function(x) {return self != this; })
+                          .style("opacity", .1)
+            })
+
+            let tooltip = svg.append("g")
+                              .attr("class", "tooltip")
+                              .style("display", "none")
+                              .style("font-weight", "bold")
+                              .style("font-size", "30px")
+                              .style("font-family", "Courier")
+                              .attr("stroke", "yellow")
+                              .attr("fill", "black")
+
+              tooltip.append("text")
+                      .attr("x", 15)
+                      .attr("dy", "1.2em");
+
+
 
         d3.select("svg").selectAll(".text")
             .data(climates)
@@ -199,6 +240,7 @@ window.onload = function() {
           		.data(climates)
           		.enter().append("text")
           		.attr("class", "climates")
+              .attr("id", (d, i) => d)
           		.attr("x", width - 130)
           		.attr("y", (d, i) => 90 + 30 * i)
           		.text((d, i) => climates[i])

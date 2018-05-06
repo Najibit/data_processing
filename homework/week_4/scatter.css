@@ -1,14 +1,12 @@
 .svg {
   margin-left: 100px;
-  margin-top: 50px;
   padding-bottom: 50px;
   padding-left: 50px;
 }
 
 
 img {
-    margin-left: 300px;
-    margin-right: auto;
+    padding-left: 400px;
 }
 
 body {
@@ -37,4 +35,13 @@ h1 {
 
 .climates {
   font: white;
+}
+
+#info {
+  text-align: center;
+  padding-left: 200px;
+  padding-right: 200px;
+  font-family: Courier, monospace;
+  font-size: 30px;
+  color: yellow;
 }
