@@ -28,141 +28,121 @@ window.onload = function() {
     .defer(d3.request, planetLink7)
     .awaitAll(doFunction);
 
-  function doFunction(error, response) {
-    if (error) throw error;
+    function doFunction(error, response) {
+      if (error) throw error;
 
-    const planetData = [];
+      const planetData = [];
 
-    for (let i = 0; i < planetAmount; i++) {
-      let goo = JSON.parse(response[i].responseText);
-      planetData.push(goo.results);
-    }
+      for (let i = 0; i < planetAmount; i++) {
+        let goo = JSON.parse(response[i].responseText);
+        planetData.push(goo.results);
+      }
 
-    for (let i = 0; i < planetAmount; i++) {
-      planetData[i].forEach(function (planet) {
-        if (planet.name != "unknown"
-            && planet.rotation_period != "unknown"
-            && planet.rotation_period != "0"
-            && planet.orbital_period != "unknown"
-            && planet.orbital_period != "0"
-            && planet.diameter != "unknown"
-            && planet.diameter != "0") {
-              planets.push(planet);
+      for (let i = 0; i < planetAmount; i++) {
+        planetData[i].forEach(function (planet) {
+          if (planet.name != "unknown"
+              && planet.rotation_period != "unknown"
+              && planet.rotation_period != "0"
+              && planet.orbital_period != "unknown"
+              && planet.orbital_period != "0"
+              && planet.diameter != "unknown"
+              && planet.diameter != "0") {
+                planets.push(planet);
+          }
+        })
+      }
+
+      for (let i = 0; i < planets.length; i++) {
+        let C3PO = [];
+        if (planets[i].orbital_period < 700
+            && planets[i].rotation_period < 40) {
+        C3PO.push(parseInt(planets[i].orbital_period));
+        C3PO.push(parseInt(planets[i].rotation_period));
+        C3PO.push(parseInt(planets[i].diameter));
+        C3PO.push(planets[i].climate.split(', '));
+        C3PO.push(planets[i].name)
+        spheres.push(C3PO);
         }
-      })
-    }
-
-    for (let i = 0; i < planets.length; i++) {
-      let C3PO = [];
-      if (planets[i].orbital_period < 700
-          && planets[i].rotation_period < 40) {
-      C3PO.push(parseInt(planets[i].orbital_period));
-      C3PO.push(parseInt(planets[i].rotation_period));
-      C3PO.push(parseInt(planets[i].diameter));
-      C3PO.push(planets[i].climate.split(', '));
-      C3PO.push(planets[i].name)
-      spheres.push(C3PO);
       }
-    }
 
 
-    // svg element
+      // svg element
 
-    let svg = d3.select("body").append("svg")
+      let svg = d3.select("body").append("svg")
 
-    svg.append("rect")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("fill", "black");
+      svg.append("rect")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("fill", "black");
 
-    // dimensions
-    const width = 1200;
-    const height = 500;
-    const margin = {top: 20, right: 20, bottom: 30, left: 40};
-
-
-    //stars
-
-    for (let i = 0; i < 500; i++) {
-      let xy = [];
-      xy.push(20 + Math.random() * (width - 200));
-      xy.push(Math.random() * height);
-      starsXandY.push(xy);
-    }
+      // dimensions
+      const width = 1200;
+      const height = 500;
+      const margin = {top: 20, right: 20, bottom: 30, left: 40};
 
 
-    // color color
+      //stars
 
-    function getColor(climate) {
-      if (climate.includes('temperate')) {
-          return '#bb9613';
-      } else if (climate.includes('frozen')) {
-        return '#87CEFA';
-      } else if (climate.includes('murky')) {
-        return '#D8BFD8';
-      } else if (climate.includes('arid')) {
-        return '#FFE4B5';
-      } else if (climate.includes('windy')) {
-        return '#2F4F4F';
-      } else if (climate.includes('hot')) {
-        return '#e6550d';
-      } else if (climate.includes('tropical')) {
-        return '#31a354';
-      } else if (climate.includes('frigid')) {
-        return '#FFF';
-      } else if (climate.includes('humid')) {
-        return '#9ecaff';
-      } else if (climate.includes('polluted')) {
-        return '#6B8E23';
-      } else if (climate.includes('superheated')) {
-        return '#e60d00';
-      } else if (climate.includes('artic') || climate.includes('subartic')) {
-        return '#3182bd';
+      for (let i = 0; i < 500; i++) {
+        let xy = [];
+        xy.push(20 + Math.random() * (width - 200));
+        xy.push(Math.random() * height);
+        starsXandY.push(xy);
       }
-    }
-
-    climates.push('temperate', 'frozen', 'murky', 'arid', 'windy', 'hot', 'tropical', 'frigid', 'humid', 'polluted', 'superheated', 'artic');
-    climateColors = ['#bb9613', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd'];
-    // var gradient = svg.append("svg:defs")
-    //                   .append("svg:linearGradient")
-    //                   .attr("id", "gradient")
-    //                   .attr("x1", "0%")
-    //                   .attr("y1", "0%")
-    //                   .attr("x2", "100%")
-    //                   .attr("y2", "100%")
-    //                   .attr("spreadMethod", "pad");
-    //
-    //    gradient.append("svg:stop")
-    //             .attr("offset", "0%")
-    //             .attr("stop-color", "#a00000")
-    //             .attr("stop-opacity", 1);
-    //
-    //   gradient.append("svg:stop")
-    //           .attr("offset", "100%")
-    //           .attr("stop-color", "#aaaa00")
-    //           .attr("stop-opacity", 1);
 
 
+      // color color
+
+      function getColor(climate) {
+        if (climate.includes('temperate')) {
+            return '#bb9613';
+        } else if (climate.includes('frozen')) {
+          return '#87CEFA';
+        } else if (climate.includes('murky')) {
+          return '#D8BFD8';
+        } else if (climate.includes('arid')) {
+          return '#FFE4B5';
+        } else if (climate.includes('windy')) {
+          return '#2F4F4F';
+        } else if (climate.includes('hot')) {
+          return '#e6550d';
+        } else if (climate.includes('tropical')) {
+          return '#31a354';
+        } else if (climate.includes('frigid')) {
+          return '#FFF';
+        } else if (climate.includes('humid')) {
+          return '#9ecaff';
+        } else if (climate.includes('polluted')) {
+          return '#6B8E23';
+        } else if (climate.includes('superheated')) {
+          return '#e60d00';
+        } else if (climate.includes('artic') || climate.includes('subartic')) {
+          return '#3182bd';
+        }
+      }
+
+      climates.push('temperate', 'frozen', 'murky', 'arid', 'windy', 'hot', 'tropical', 'frigid', 'humid', 'polluted', 'superheated', 'artic');
+      climateColors = ['#bb9613', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd'];
 
 
-    // scales
-    const xScale = d3.scaleLinear()
-                        .domain([
-                          100,
-                          d3.max(spheres, d => d[0] + 100)
-                        ])
-                        .range([0, width - 200]);
-    const yScale = d3.scaleLinear()
-                        .domain([
-                          d3.min(spheres, d => d[1] - 12),
-                          d3.max(spheres, d => d[1] + 10)
-                        ])
-                        .range([height, 0]);
+      // scales
+      const xScale = d3.scaleLinear()
+                          .domain([
+                            100,
+                            d3.max(spheres, d => d[0] + 100)
+                          ])
+                          .range([0, width - 200]);
+      const yScale = d3.scaleLinear()
+                          .domain([
+                            d3.min(spheres, d => d[1] - 12),
+                            d3.max(spheres, d => d[1] + 10)
+                          ])
+                          .range([height, 0]);
 
-    svg.attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-          .attr("class", "svg")
-          .attr("transform", "translate(0, 50)")
+      svg.attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("class", "svg")
+            .attr("transform", "translate(0, 50)")
 
 
 
