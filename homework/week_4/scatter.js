@@ -237,8 +237,9 @@ window.onload = function() {
       d3.select("svg").append("text")
             .attr("x", width / 2)
             .attr("y", height)
-            .text("ORBIT AROUND PARENT STAR")
+            .text("[ORBIT AROUND PARENT STAR]")
             .attr("transform", "translate(-250, 50)")
+            .style("font-family", "courier, monospace")
             .style("stroke", "yellow")
             .style("font-size", "25px")
 
@@ -248,24 +249,21 @@ window.onload = function() {
             // .attr("transform", "rotate(-90)")
             .style("stroke", "yellow")
             .style("font-size", "25px")
-            .text("ROTATION AROUND AXIS")
+            .style("font-family", "courier, monospace")
+            .text("[ROTATION AROUND AXIS]")
             .attr("transform", "rotate(-90)")
 
 
+            svg.selectAll("ellipse")
+                .data(starsXandY)
+                .enter()
+                .append('circle')
+                .attr('cx', d => d[0])
+                .attr('cy', d => d[1])
+                .attr('r', 1)
+                .attr('fill', 'yellow')
+                .attr('class', 'stars')
 
-function starryNight (count) {
-        svg.selectAll("ellipse")
-            .data(starsXandY)
-            .enter()
-            .append('circle')
-            .attr('cx', d => d[0])
-            .attr('cy', d => d[1])
-            .attr('r', 1)
-            .attr('fill', 'yellow')
-            .attr('class', 'stars')
-}
-
-window.setInterval(starryNight(Math.random()), 1000);
 
 
     let xAxis = d3.axisBottom (xScale)
@@ -284,24 +282,5 @@ window.setInterval(starryNight(Math.random()), 1000);
         .attr("transform", "translate(" + margin.right + ", -3)")
         .call(yAxis);
 
-
-
-
-    // interactivity
-    response = spheres;
-    // implement interactivity by displaying count of crimes on hover-over
-    // create d3 tip
-  	// var tip = d3.tip()
-  	// 	.attr("class", "d3-tip")
-  	// 	.offset([0, 0])
-    //
-  	// 	// tip should display corresponding datavalues
-  	// 	.html(function(d, i) {
-  	// 		return "<p><strong>" + d[4] + "</strong></p><p><text>("
-  	// 			+ d[0] + "," + d[1]
-  	// 			+ ") </text></p>"
-  	// 	})
-    //
-  	// svg.call(tip)
-}
+      }
 }
