@@ -1,11 +1,17 @@
-const planets = [];
-const spheres = [];
-const climates = [];
-
-
 window.onload = function() {
 
+  // arrays to store data in
   const starsXandY = [];
+  const planets = [];
+  const spheres = [];
+  const climates = [];
+  const climateColors = [];
+  const planetData = [];
+
+
+  // API links to call
+
+  const planetAmount = 7;
   const planetLink1 = "https://swapi.co/api/planets/";
   const planetLink2 = "https://swapi.co/api/planets/?page=2";
   const planetLink3 = "https://swapi.co/api/planets/?page=3";
@@ -14,10 +20,7 @@ window.onload = function() {
   const planetLink6 = "https://swapi.co/api/planets/?page=6";
   const planetLink7 = "https://swapi.co/api/planets/?page=7";
 
-
-  const planetAmount = 7;
-
-
+  // d3 API call
   d3.queue()
     .defer(d3.request, planetLink1)
     .defer(d3.request, planetLink2)
@@ -26,21 +29,23 @@ window.onload = function() {
     .defer(d3.request, planetLink5)
     .defer(d3.request, planetLink6)
     .defer(d3.request, planetLink7)
-    .awaitAll(doFunction);
+    .awaitAll(theForce);
 
-    function doFunction(error, response) {
+
+    function theForce(error, response) {
       if (error) throw error;
 
-      const planetData = [];
-
+      // parse API response
       for (let i = 0; i < planetAmount; i++) {
         let goo = JSON.parse(response[i].responseText);
         planetData.push(goo.results);
       }
 
+      // filter out all unusable planets
       for (let i = 0; i < planetAmount; i++) {
         planetData[i].forEach(function (planet) {
           if (planet.name != "unknown"
+              && planet.name != "Bestine IV"
               && planet.rotation_period != "unknown"
               && planet.rotation_period != "0"
               && planet.orbital_period != "unknown"
@@ -52,6 +57,8 @@ window.onload = function() {
         })
       }
 
+
+      // restructering data so it's usable
       for (let i = 0; i < planets.length; i++) {
         let C3PO = [];
         if (planets[i].orbital_period < 700
@@ -66,23 +73,22 @@ window.onload = function() {
       }
 
 
-      // svg element
-
+      // start with drawing svg
       let svg = d3.select("body").append("svg")
 
+      // append a black background for spacy feel
       svg.append("rect")
           .attr("width", "100%")
           .attr("height", "100%")
           .attr("fill", "black");
 
-      // dimensions
+      // dimensions to use
       const width = 1200;
       const height = 500;
       const margin = {top: 20, right: 20, bottom: 30, left: 40};
 
 
-      //stars
-
+      // stars info
       for (let i = 0; i < 500; i++) {
         let xy = [];
         xy.push(20 + Math.random() * (width - 200));
@@ -91,38 +97,37 @@ window.onload = function() {
       }
 
 
-      // color color
+      // set colors for the different climates
+      climateColors.push('#bb9613', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd');
+      climates.push('temperate', 'frozen', 'murky', 'arid', 'windy', 'hot', 'tropical', 'frigid', 'humid', 'polluted', 'superheated', 'artic');
 
       function getColor(climate) {
-        if (climate.includes('temperate')) {
-            return '#bb9613';
-        } else if (climate.includes('frozen')) {
-          return '#87CEFA';
-        } else if (climate.includes('murky')) {
-          return '#D8BFD8';
-        } else if (climate.includes('arid')) {
-          return '#FFE4B5';
-        } else if (climate.includes('windy')) {
-          return '#2F4F4F';
-        } else if (climate.includes('hot')) {
-          return '#e6550d';
-        } else if (climate.includes('tropical')) {
-          return '#31a354';
-        } else if (climate.includes('frigid')) {
-          return '#FFF';
-        } else if (climate.includes('humid')) {
-          return '#9ecaff';
-        } else if (climate.includes('polluted')) {
-          return '#6B8E23';
-        } else if (climate.includes('superheated')) {
-          return '#e60d00';
-        } else if (climate.includes('artic') || climate.includes('subartic')) {
-          return '#3182bd';
+        if (climate.includes(climates[0])) {
+            return climateColors[0];
+        } else if (climate.includes(climates[1])) {
+          return climateColors[1];
+        } else if (climate.includes(climates[2])) {
+          return climateColors[2];
+        } else if (climate.includes(climates[3])) {
+          return climateColors[3];
+        } else if (climate.includes(climates[4])) {
+          return climateColors[4];
+        } else if (climate.includes(climates[5])) {
+          return climateColors[5];
+        } else if (climate.includes(climates[6])) {
+          return climateColors[6];
+        } else if (climate.includes(climates[7])) {
+          return climateColors[7];
+        } else if (climate.includes(climates[8])) {
+          return climateColors[8];
+        } else if (climate.includes(climates[9])) {
+          return climateColors[9];
+        } else if (climate.includes(climates[10])) {
+          return climateColors[10];
+        } else if (climate.includes(climates[11])) {
+          return climateColors[11];
         }
       }
-
-      climates.push('temperate', 'frozen', 'murky', 'arid', 'windy', 'hot', 'tropical', 'frigid', 'humid', 'polluted', 'superheated', 'artic');
-      climateColors = ['#bb9613', '#87CEFA', '#D8BFD8', '#FFE4B5', '#2F4F4F', '#e6550d', '#31a354', '#FFF', '#9ecaff', '#6B8E23', '#e60d00', '#3182bd'];
 
 
       // scales
@@ -139,30 +144,31 @@ window.onload = function() {
                           ])
                           .range([height, 0]);
 
+      // set some attributes to svg
       svg.attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("class", "svg")
             .attr("transform", "translate(0, 50)")
 
-
-
-
-
-    svg.selectAll("circle")
-        .data(spheres)
-        .enter()
-        .append("circle")
-        .attr('cx', d => xScale(d[0]) + margin.left)
-        .attr('cy', d => yScale(d[1]))
-        .attr('r', 3)
-        .transition().duration(4000) // make the bars rise at page visit
-        .delay(function (d, i) { return i * 100;})
-        .attr('r', d => (5 + (d[2] * 20) / 19720))
-        .attr("fill", d => getColor(d[3]))
-        .style('stroke', 'black')
-        .style('stroke-width', '1px')
-        .attr('class', 'planet')
-        .attr('id', (d, i) => d[3][0])
+      //
+      svg.selectAll("circle")
+          .data(spheres)
+          .enter()
+          .append("circle")
+          .attr('cx', width / 2)
+          .attr('cy', height / 2)
+          .attr('r', 3)
+          .attr("fill", "black")
+          .transition().duration(4000) // make planets appear at page visit
+          .delay(function (d, i) { return i * 100;})
+          .attr('cx', d => xScale(d[0]) + margin.left)
+          .attr('cy', d => yScale(d[1]))
+          .attr('r', d => (5 + (d[2] * 20) / 19720))
+          .attr("fill", d => getColor(d[3]))
+          .style('stroke', 'black')
+          .style('stroke-width', '1px')
+          .attr('class', 'planet')
+          .attr('id', (d, i) => d[3][0])
 
 
 
@@ -188,7 +194,8 @@ window.onload = function() {
               d3.select(this).attr("r", 45)
               tooltip.select("text").text(`[${d[4]}]`)
               d3.selectAll(".planet").filter(function(x) {return self != this; })
-                          .style("opacity", .1)
+                          .style("opacity", .2)
+
             })
 
             let tooltip = svg.append("g")
@@ -246,7 +253,6 @@ window.onload = function() {
       d3.select("svg").append("text")
             .attr("x", -400)
             .attr("y", -10)
-            // .attr("transform", "rotate(-90)")
             .style("stroke", "yellow")
             .style("font-size", "25px")
             .style("font-family", "courier, monospace")
@@ -258,6 +264,10 @@ window.onload = function() {
                 .data(starsXandY)
                 .enter()
                 .append('circle')
+                .attr('cx', width / 2)
+                .attr('cy', height / 2)
+                .transition().duration(4000) // make planets appear at page visit
+                .delay(function (d, i) { return i * 2;})
                 .attr('cx', d => d[0])
                 .attr('cy', d => d[1])
                 .attr('r', 1)
