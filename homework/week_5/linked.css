@@ -1,7 +1,50 @@
 .svg {
-  margin-left: 100px;
-  margin-top: 100px;
-  padding-left: 100px;
-  padding-right: 100px;
-  padding-top: 100px;
+  padding-top: 50px;
+  float: right;
+}
+
+.countrySVG {
+  border: 1px;
+}
+
+body {
+  font-family: Courier, monospace;
+}
+.mapSVG {
+  float: left;
+}
+
+.country {
+  fill: gray;
+  stroke: black;
+}
+
+.selected {
+  fill: yellow;
+}
+
+.hovered {
+  opacity: 0.7;
+}
+
+.nothovered {
+  opacity: 1.0;
+}
+
+.eu {
+  fill: darkblue;
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.eu:hover {
+  opacity: 0.5;
+}
+
+.notEU {
+  fill: gray;
+}
+
+.notEU:hover {
+  opacity: 1.0;
 }
