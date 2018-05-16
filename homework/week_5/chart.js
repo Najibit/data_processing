@@ -70,6 +70,17 @@ function makeChart(country) {
              .attr("x", 15)
              .attr("dy", "1.2em");
 
+     d3.select("#chart")
+         .append("text")
+         .attr("class", "countryTitle")
+         .attr("x", WIDTH - MARGIN.right)
+         .attr("y", 0)
+         .text(country)
+         .style("stroke", "yellow")
+         .style("fill", "yellow")
+         .style("font-size", "30px")
+         .style("font-family", "Courier, monospace")
+
 
 
      let xAxis = d3.axisBottom(xScale).ticks(0)

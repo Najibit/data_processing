@@ -1,10 +1,11 @@
 .svg {
   padding-top: 50px;
+  margin-top: 150px;
   float: right;
 }
 
 .countrySVG {
-  border: 1px;
+  border: 10px;
 }
 
 body {
