@@ -10,7 +10,4 @@ function getData() {
                     'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta',
                     'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
                     'Slovenia', 'Spain', 'Sweden', 'United+Kingdom'];
-
-
-
 }

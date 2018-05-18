@@ -26,7 +26,10 @@ const URL = "http://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=
 const FORMAT = "&format=json&limit=10";
 const data = {};
 let artistCount = 10;
-
+let csv;
+let internetUsage = [];
+let internetUsageStats = [];
+let internetAccess = [];
 
 const API_LINKS = [];
 
@@ -35,6 +38,39 @@ for (let i = 0; i < europeanUnion.length; i++) {
 }
 
 window.onload = function() {
+
+
+  d3.csv("isoc_ci_ifp_iu_1_Data.csv", function(data) {
+
+    for (let i = 0; i < data.length; i++) {
+      let countryAccess = [];
+      if ((europeanUnion.includes(data[i].GEO.replace(' ', '+'))
+          || data[i].GEO == "Germany (until 1990 former territory of the FRG)")
+          && data[i].INDIC_IS == "Last internet use: in the last 12 months"
+          && data[i].IND_TYPE == 'All Individuals'
+          && data[i].UNIT == "Percentage of individuals"
+          && data[i].TIME == '2017'
+        ) {
+        countryAccess.push(data[i].GEO.replace('(until 1990 former territory of the FRG)', ''));
+        countryAccess.push(parseInt(data[i].Value) / 100);
+        internetAccess.push(countryAccess);
+      }
+    }
+  })
+
+  d3.csv("internetusage.csv", function(data) {
+    for (let i = 1; i < data.length; i++) {
+      internetUsage.push(data[i]['country;2010;2014'].split(';'));
+    }
+
+    for (let i = 0; i < internetUsage.length; i++) {
+      if (europeanUnion.includes(internetUsage[i][0].replace(' ', '+'))) {
+        internetUsage[i][1] / 100;
+        internetUsage[i][2] / 100;
+        internetUsageStats.push(internetUsage[i]);
+      }
+    }
+  })
 
   const Q = d3.queue();
 
@@ -78,7 +114,14 @@ window.onload = function() {
 
 let random = Math.floor(Math.random() * europeanUnion.length)
 
-      createMap();
+      createMap(0);
+
+      document.getElementById("data1").addEventListener("click", function(){
+        createMap(0);
+      });
+      document.getElementById("data2").addEventListener("click", function(){
+        createMap(1);
+      });
 
      }
 

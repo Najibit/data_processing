@@ -1,19 +1,18 @@
 function makeChart(country) {
 
-    d3.select('#chart').remove();
+    d3.selectAll('#chart').remove();
 
     const WIDTH = 500;
-    const HEIGHT = 250;
+    const HEIGHT = 300;
     const MARGIN = {top: 50, bottom: 50, left: 60, right: 65};
 
 
-    var SVG = d3.select('body')
+    let SVG = d3.select('body')
                   .append('svg')
                   .attr('width', WIDTH + MARGIN.left + MARGIN.right)
                   .attr('height', HEIGHT + MARGIN.top + MARGIN.bottom)
-                  .style('background-color', '#efefef')
                   .attr('class', 'svg')
-                  .attr('id', 'chart')
+                  .attr('id', 'chart');
 
 
     const xScale = d3.scaleLinear()
@@ -26,6 +25,8 @@ function makeChart(country) {
 
     let barWidth = 45;
 
+    barColors = ['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525', '#111111','#000000'];
+    barColors.reverse();
 
     SVG.selectAll("rect")
        .data(data[country])
@@ -36,48 +37,42 @@ function makeChart(country) {
        .attr("width", barWidth)
        .attr("height", d => HEIGHT - yScale(d.listeners))
        .style("opacity", 0)
-       .attr("fill", "gray")
        .transition().duration(4000)
        .delay((d, i) => i * 50)
        .style("opacity", 1)
        .attr("y", d => yScale(d.listeners))
-       .attr('fill', 'blue')
+       .attr('fill', (d, i) => barColors[i])
        .attr('stroke', 'black')
 
-   SVG.selectAll("rect")
-       .data(data[country])
-       .on("mouseover", function() {
-         tooltip.style("display", null);
-       })
-       .on("mouseout", function() {
-         tooltip.style("display", "none");
-       })
-       .on("mousemove", function(d, i) {
-         let xPos =    d3.mouse(this)[0] - 15;
-         let yPos =    d3.mouse(this)[1] - 55;
-         tooltip.attr("transform", "translate(" + xPos +  "," + yPos + ")");
-         tooltip.select("text").text(d.name);
-       })
+       let tip = d3.tip()
+        .attr("class", "d3-tip")
+        .offset([-10, -20])
+        .html(function(d, i) {
+          return "<strong>Rank: " + i + "<br>Artist: </strong>" + d.name + "<br><strong>Listeners worldwide: </strong>" + d.listeners +"</span>";
+        })
 
-     let tooltip = SVG.append("g")
-                       .attr("class", "tooltip")
-                       .style("display", "none")
-                       .style("font-weight", "bold")
-                       .style("font-size", "30px")
-                       .style("color", "red");
 
-     tooltip.append("text")
-             .attr("x", 15)
-             .attr("dy", "1.2em");
+       SVG.selectAll("rect")
+           .data(data[country])
+           .on("mouseover", function(d, i) {
+             tip.show(d, i+1)
+           })
+           .on("mouseout", function(d, i) {
+             tip.hide(d, i)
+           })
 
      d3.select("#chart")
          .append("text")
          .attr("class", "countryTitle")
-         .attr("x", WIDTH - MARGIN.right)
-         .attr("y", 0)
+         .attr("x", WIDTH / 2)
+         .attr("y", HEIGHT + MARGIN.bottom - 5)
          .text(country)
-         .style("stroke", "yellow")
-         .style("fill", "yellow")
+         .style('opacity', 0)
+         .transition().duration(1000)
+         .delay((d, i) => i * 50)
+         .style('opacity', 1)
+         .style("stroke", "black")
+         .style("fill", "black")
          .style("font-size", "30px")
          .style("font-family", "Courier, monospace")
 
@@ -95,4 +90,6 @@ function makeChart(country) {
          .attr('class', 'axis')
          .attr('transform', 'translate(' + MARGIN.left + ",0)")
          .call(yAxis);
+
+    SVG.call(tip);
 }
