@@ -16,7 +16,7 @@ function createMap(number) {
   let q = d3.queue();
 
   q.defer(d3.request, 'eu.topojson')
-    .awaitAll(doThis)
+    .awaitAll(getTunes)
 
   let projection = d3.geoMercator()
     .translate([280, 1000])
@@ -26,7 +26,7 @@ function createMap(number) {
   let path = d3.geoPath()
     .projection(projection)
 
-  function doThis(error, data) {
+  function getTunes(error, data) {
     if (error) throw error;
 
     data = JSON.parse(data[0].responseText)
@@ -153,7 +153,7 @@ function createMap(number) {
     d3.select(".countrySVG")
         .append("text")
         .attr("class", "mapTitle")
-        .attr("x", 200)
+        .attr("x", 100)
         .attr("y", 650)
         .text((number == 0) ? 'Percentage of individuals that have access to the internet' : 'Percentage of individuals that use the internet to listen to music')
         .style('opacity', 0)
