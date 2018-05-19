@@ -11,7 +11,6 @@ Date: 18/05/2018
 Shows an interactive view between a map of the European union, the percentage of individuals that has internetaccess, 
 the percentage of individuals that uses the internet to listen to music, the top 10 ranking artists (of all time) in the respective countries,
 and the amount of listens of these artists worldwide.
-
 */
 
 // declaring variables globally for scope
