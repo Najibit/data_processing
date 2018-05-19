@@ -1,43 +1,55 @@
 
 /*
-Het is nog (lang) niet af. Het idee is om een kaart van de Europese Unie te hebben,
-waarbij je per land kan zien wat de top 10 muziekartiesten zijn. Ik kwam er echter halverwege achter,
-dat je enkel het aantal listens wereldwijd ziet, niet per land. Kan ik ook een scorebord maken per land met de top 10 artiesten?
-Of moet het een grafiek zijn
+euro.fm linked view charts
 
-Stappenplan:
-1. Van 1 land een staafdiagram maken
-2. Aan de hand van JQuery de staafdiagram laten veranderen
-3. Een landkaart instellen en aan de hand daarvan laten veranderen
-4. Met CSS styling doen
-5. Bootstrap functionaliteiten toevoegen.
+Name: Najib el Moussaoui
+Course: Dataprocessing
+Date: 18/05/2018
+
+
+Shows an interactive view between a map of the European union, the percentage of individuals that has internetaccess, 
+the percentage of individuals that uses the internet to listen to music, the top 10 ranking artists (of all time) in the respective countries,
+and the amount of listens of these artists worldwide.
 
 */
 
 
-let europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
+// let europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
+//                   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
+//                   'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta',
+//                   'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
+//                   'Slovenia', 'Spain', 'Sweden', 'United+Kingdom'];
+
+
+const data = {};
+
+
+// for (let i = 0; i < europeanUnion.length; i++) {
+//   API_LINKS.push(URL + europeanUnion[i] + API_KEY + FORMAT);
+// }
+
+window.onload = function() {
+  
+  
+  
+  const API_LINKS = [];
+  const API_KEY = "&api_key=3720eb4ef07788c0a16540ceda7dcb61";
+  const URL = "https://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=";
+  const FORMAT = "&format=json&limit=10";
+
+  let internetUsage = [];
+  let internetUsageStats = [];
+  let internetAccess = [];
+  
+  let europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
                   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
                   'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta',
                   'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
                   'Slovenia', 'Spain', 'Sweden', 'United+Kingdom'];
-
-const API_KEY = "&api_key=3720eb4ef07788c0a16540ceda7dcb61";
-const URL = "https://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=";
-const FORMAT = "&format=json&limit=10";
-const data = {};
-let artistCount = 10;
-let csv;
-let internetUsage = [];
-let internetUsageStats = [];
-let internetAccess = [];
-
-const API_LINKS = [];
-
-for (let i = 0; i < europeanUnion.length; i++) {
+  
+  for (let i = 0; i < europeanUnion.length; i++) {
   API_LINKS.push(URL + europeanUnion[i] + API_KEY + FORMAT);
-}
-
-window.onload = function() {
+  }
 
 
   d3.csv("isoc_ci_ifp_iu_1_Data.csv", function(data) {
