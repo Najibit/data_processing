@@ -17,6 +17,9 @@ and the amount of listens of these artists worldwide.
 let europeanUnion; 
 
 const data = {};
+let internetUsage = [];
+let internetUsageStats = [];
+let internetAccess = [];
 
 
 // for (let i = 0; i < europeanUnion.length; i++) {
@@ -30,10 +33,6 @@ window.onload = function() {
   const API_KEY = "&api_key=3720eb4ef07788c0a16540ceda7dcb61";
   const URL = "https://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=";
   const FORMAT = "&format=json&limit=10";
-
-  let internetUsage = [];
-  let internetUsageStats = [];
-  let internetAccess = [];
   
   europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
                   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
