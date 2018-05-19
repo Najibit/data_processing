@@ -48,6 +48,7 @@ window.onload = function() {
   for (let i = 0; i < europeanUnion.length; i++) {
     Q.defer(d3.request, API_LINKS[i]);
   }
+  
   // when api requests are done, call shuffle function
   Q.awaitAll(shuffle);
 
@@ -124,16 +125,14 @@ window.onload = function() {
 
       // create first map at page visit
       createMap(0);
-      
-      
-      document.getElementById("data1").addEventListener("click", function(){
-        // when access map button is clicked, create that map
-        createMap(0);
-      });
-      document.getElementById("data2").addEventListener("click", function(){
-        // when usage map button is clicked, create that map
-        createMap(1);
-      });
-
-     }
+            
+  document.getElementById("data1").addEventListener("click", function(){
+      // when access map button is clicked, create that map
+      createMap(0);
+    });
+  document.getElementById("data2").addEventListener("click", function(){
+      // when usage map button is clicked, create that map
+      createMap(1);
+    });
+  }
 }
