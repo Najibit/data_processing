@@ -14,12 +14,7 @@ and the amount of listens of these artists worldwide.
 */
 
 
-// let europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
-//                   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
-//                   'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta',
-//                   'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
-//                   'Slovenia', 'Spain', 'Sweden', 'United+Kingdom'];
-
+let europeanUnion; 
 
 const data = {};
 
@@ -40,7 +35,7 @@ window.onload = function() {
   let internetUsageStats = [];
   let internetAccess = [];
   
-  var europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
+  europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
                   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
                   'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta',
                   'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
