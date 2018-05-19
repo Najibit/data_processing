@@ -31,7 +31,6 @@ const data = {};
 window.onload = function() {
   
   
-  
   const API_LINKS = [];
   const API_KEY = "&api_key=3720eb4ef07788c0a16540ceda7dcb61";
   const URL = "https://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=";
@@ -108,6 +107,8 @@ window.onload = function() {
 
       // extract country names
       let country = info.topartists['@attr'].country;
+
+      const artistCount = 10;
 
       // extract top 10 artists
       for (let j = 0; j < artistCount; j++) {
