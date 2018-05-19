@@ -22,6 +22,7 @@ let internetUsageStats = [];
 let internetAccess = [];
 let artistCount = 10;
 
+// on load, launch code
 window.onload = function() {
   
   // API variables
@@ -69,12 +70,14 @@ window.onload = function() {
         }
       }
     })
-
+  
+  // get data about internet usage (for music) from csv file
   d3.csv("internetusage.csv", function(data) {
     for (let i = 1; i < data.length; i++) {
       internetUsage.push(data[i]['country;2010;2014'].split(';'));
     }
-
+    
+    // and process it so it's usable
     for (let i = 0; i < internetUsage.length; i++) {
       if (europeanUnion.includes(internetUsage[i][0].replace(' ', '+'))) {
         internetUsage[i][1] / 100;
@@ -84,13 +87,13 @@ window.onload = function() {
     }
   })
 
-  
-
   // function to launch when API calls are done
   function shuffle(error, response) {
     if (error) throw error;
 
+    // process data so it's usable
     for (let i = 0; i < response.length; i++) {
+      
       // make a dict for information per country
       let countryData = {};
 
@@ -115,22 +118,23 @@ window.onload = function() {
 
         artists.push(musician);
       }
-
+      
+      // add to global data dict
       data[country] = artists;
     }
 
-
-let random = Math.floor(Math.random() * europeanUnion.length)
-
+      // create first map at page visit
       createMap(0);
-
+      
+      
       document.getElementById("data1").addEventListener("click", function(){
+        // when access map button is clicked, create that map
         createMap(0);
       });
       document.getElementById("data2").addEventListener("click", function(){
+        // when usage map button is clicked, create that map
         createMap(1);
       });
 
      }
-
 }
