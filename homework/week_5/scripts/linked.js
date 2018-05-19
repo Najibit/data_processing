@@ -3,6 +3,7 @@
 euro.fm linked view charts
 
 Name: Najib el Moussaoui
+Student ID: 10819967
 Course: Dataprocessing
 Date: 18/05/2018
 
@@ -13,7 +14,7 @@ and the amount of listens of these artists worldwide.
 
 */
 
-
+// declaring variables globally for scope
 let europeanUnion; 
 let data = {};
 let internetUsage = [];
@@ -21,47 +22,53 @@ let internetUsageStats = [];
 let internetAccess = [];
 let artistCount = 10;
 
-
-// for (let i = 0; i < europeanUnion.length; i++) {
-//   API_LINKS.push(URL + europeanUnion[i] + API_KEY + FORMAT);
-// }
-
 window.onload = function() {
   
-  
+  // API variables
   const API_LINKS = [];
   const API_KEY = "&api_key=3720eb4ef07788c0a16540ceda7dcb61";
   const URL = "https://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=";
   const FORMAT = "&format=json&limit=10";
   
+  // all countries in the European Union
   europeanUnion = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech+Republic', 'Denmark',
                   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
                   'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta',
                   'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia',
                   'Slovenia', 'Spain', 'Sweden', 'United+Kingdom'];
   
+  // create an api link for each EU country
   for (let i = 0; i < europeanUnion.length; i++) {
   API_LINKS.push(URL + europeanUnion[i] + API_KEY + FORMAT);
   }
+ 
+  const Q = d3.queue();
+  
+  // request information from last.fm api for each EU country
+  for (let i = 0; i < europeanUnion.length; i++) {
+    Q.defer(d3.request, API_LINKS[i]);
+  }
+  // when api requests are done, call shuffle function
+  Q.awaitAll(shuffle);
 
-
+  // get data about internet access from csv file
   d3.csv("isoc_ci_ifp_iu_1_Data.csv", function(data) {
-
-    for (let i = 0; i < data.length; i++) {
-      let countryAccess = [];
-      if ((europeanUnion.includes(data[i].GEO.replace(' ', '+'))
-          || data[i].GEO == "Germany (until 1990 former territory of the FRG)")
-          && data[i].INDIC_IS == "Last internet use: in the last 12 months"
-          && data[i].IND_TYPE == 'All Individuals'
-          && data[i].UNIT == "Percentage of individuals"
-          && data[i].TIME == '2017'
-        ) {
-        countryAccess.push(data[i].GEO.replace('(until 1990 former territory of the FRG)', ''));
-        countryAccess.push(parseInt(data[i].Value) / 100);
-        internetAccess.push(countryAccess);
+    
+  // and process data so it's usable
+  for (let i = 0; i < data.length; i++) {
+    let countryAccess = [];
+    if ((europeanUnion.includes(data[i].GEO.replace(' ', '+'))
+        || data[i].GEO == "Germany (until 1990 former territory of the FRG)")
+        && data[i].INDIC_IS == "Last internet use: in the last 12 months"
+        && data[i].IND_TYPE == 'All Individuals'
+        && data[i].UNIT == "Percentage of individuals"
+        && data[i].TIME == '2017') {
+          countryAccess.push(data[i].GEO.replace('(until 1990 former territory of the FRG)', ''));
+          countryAccess.push(parseInt(data[i].Value) / 100);
+          internetAccess.push(countryAccess);
+        }
       }
-    }
-  })
+    })
 
   d3.csv("internetusage.csv", function(data) {
     for (let i = 1; i < data.length; i++) {
@@ -77,13 +84,7 @@ window.onload = function() {
     }
   })
 
-  const Q = d3.queue();
-
-  for (let i = 0; i < europeanUnion.length; i++) {
-    Q.defer(d3.request, API_LINKS[i]);
-  }
-
-    Q.awaitAll(shuffle);
+  
 
   // function to launch when API calls are done
   function shuffle(error, response) {
