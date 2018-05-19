@@ -15,11 +15,11 @@ and the amount of listens of these artists worldwide.
 
 
 let europeanUnion; 
-
-const data = {};
+let data = {};
 let internetUsage = [];
 let internetUsageStats = [];
 let internetAccess = [];
+let artistCount = 10;
 
 
 // for (let i = 0; i < europeanUnion.length; i++) {
