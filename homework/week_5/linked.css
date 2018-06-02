@@ -7,6 +7,12 @@
   margin-top: 150px;
 }
 
+#img {
+  position: fixed;
+  top: 2px;
+  left: 2px;
+}
+
 .countrySVG {
   border: 10px;
   color: black;
