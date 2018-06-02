@@ -78,7 +78,7 @@ body {
 
 .legendsvg {
   position: fixed;
-  left: 1390px;
+  right: 0px;
   top: 50px;
 }
 
